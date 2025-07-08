@@ -16,6 +16,28 @@
  - если выходные данные не валидны, то они должны быть выставлены в 0, как и соответствующие им сигналы валидности.
  - код должен быть синтезируемым.
 
+Дан интерфейс модуля:
+```SystemVerilog
+module test_module
+#(
+    parameter DATA_W = 8
+)(
+    input logic                     clk_in,
+    input logic                     reset_in,
+
+    input logic [(DATA_W-1):0]      data_in,
+
+    output logic [(DATA_W-1):0]     out_0,
+    output logic                    out_valid_0,
+    output logic [(DATA_W-1):0]     out_1,
+    output logic                    out_valid_1,
+    output logic [(DATA_W-1):0]     out_2,
+    output logic                    out_valid_2,
+    output logic [(DATA_W-1):0]     out_3,
+    output logic                    out_valid_3
+);
+```
+
 #### Комментари к задаче (допущения)
 
  - явно не указано что такое "выходные данные не валидны" - допустил, что не валидные выходные данные это состояние регистра (на котором после сброса логический 0), который еще ниразу не обновлялся.
