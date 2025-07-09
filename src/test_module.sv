@@ -75,17 +75,17 @@ module test_module
 //                                                        Logic
 //========================================================================================================================
 
-logic [(DATA_W-1):0] data_in_buf = 0;
+(* keep *) logic [(DATA_W-1):0] data_in_buf = 0;
 
 logic out_0_reg_en;
 logic out_1_reg_en;
 logic out_2_reg_en;
 logic out_3_reg_en;
 
-logic [(DATA_W-1):0] out_0_reg = 0;
-logic [(DATA_W-1):0] out_1_reg = 0;
-logic [(DATA_W-1):0] out_2_reg = 0;
-logic [(DATA_W-1):0] out_3_reg = 0;
+(* keep *) logic [(DATA_W-1):0] out_0_reg = 0;
+(* keep *) logic [(DATA_W-1):0] out_1_reg = 0;
+(* keep *) logic [(DATA_W-1):0] out_2_reg = 0;
+(* keep *) logic [(DATA_W-1):0] out_3_reg = 0;
 
 logic out_0_reg_latch = 0;
 logic out_1_reg_latch = 0;
@@ -96,6 +96,8 @@ logic out_0_xor;
 logic out_1_xor;
 logic out_2_xor;
 logic out_3_xor;
+
+logic flag_first_after_rst;
 
 //========================================================================================================================
 //                                                       Behavior
@@ -135,11 +137,21 @@ WPWS: 1.275 ns
 
 //========================================================================================================================
 
+always_ff @(posedge clk_in) begin: proc_test_module_data_buf
+    if(reset_in) begin
+        data_in_buf <= 0;
+    end else begin
+        data_in_buf <= data_in;
+    end
+end
+
+//------------------------------------------------------------------------------------------------------------------------
+
 always_comb begin: proc_test_module_get_uniq
-    out_0_xor = |(data_in^out_0_reg);
-    out_1_xor = |(data_in^out_1_reg);
-    out_2_xor = |(data_in^out_2_reg);
-    out_3_xor = |(data_in^out_3_reg);
+    out_0_xor = |(data_in_buf^out_0_reg);
+    out_1_xor = |(data_in_buf^out_1_reg);
+    out_2_xor = |(data_in_buf^out_2_reg);
+    out_3_xor = |(data_in_buf^out_3_reg);
 end
 
 always_comb begin: proc_test_module_gen_enable
@@ -153,12 +165,16 @@ end
 
 always_ff @(posedge clk_in) begin : proc_test_module_gen_valid
     if(reset_in) begin
+        flag_first_after_rst <= 0;
+
         out_0_reg_latch <= 0;
         out_1_reg_latch <= 0;
         out_2_reg_latch <= 0;
         out_3_reg_latch <= 0;
     end else begin
-        out_0_reg_latch <= out_0_reg_latch|out_0_reg_en;
+        flag_first_after_rst <= 1;
+
+        out_0_reg_latch <= flag_first_after_rst;
         out_1_reg_latch <= out_1_reg_latch|out_1_reg_en;
         out_2_reg_latch <= out_2_reg_latch|out_2_reg_en;
         out_3_reg_latch <= out_3_reg_latch|out_3_reg_en;
@@ -175,19 +191,27 @@ always_ff @(posedge clk_in) begin: proc_test_module_data_out
         out_3_reg <= 0;
     end else begin
         if (out_0_reg_en) begin
-            out_0_reg <= data_in;
+            out_0_reg <= data_in_buf;
+        end else begin
+            out_0_reg <= out_0_reg;
         end
 
         if (out_1_reg_en) begin
             out_1_reg <= out_0_reg;
+        end else begin
+            out_1_reg <= out_1_reg;
         end
 
         if (out_2_reg_en) begin
             out_2_reg <= out_1_reg;
+        end else begin
+            out_2_reg <= out_2_reg;
         end
 
         if (out_3_reg_en) begin
             out_3_reg <= out_2_reg;
+        end else begin
+            out_3_reg <= out_3_reg;
         end
     end
 end

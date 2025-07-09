@@ -3,23 +3,32 @@ add wave -divider global
 
 add wave -color #CCFF89 -label clk_in /test_module_tb/clk_in
 add wave -color #CCFF89 -label reset_in /test_module_tb/reset_in
+add wave -radix dec -color #CCFF89 -label cnt /test_module_tb/cnt
+add wave -color #CCFF89 -label en_display /test_module_tb/en_display
 
 # --------------------------------------------------------------------
 add wave -divider data
 
+# add wave -color #FF7CA3 -label shift_reg_0 /test_module_tb/shift_reg(0)
+add wave -color #FF7CA3 -label shift_reg_delay_0 /test_module_tb/shift_reg_delay(0)
+
 add wave -color #FF7CA3 -label data_in /test_module_tb/data_in
+add wave -color #FF7CA3 -label data_in_buf /test_module_tb/uut/data_in_buf
 
 add wave -color #7FB0FF -label out_0 /test_module_tb/out_0
-add wave -color #7FB0FF -label out_valid_0 /test_module_tb/out_valid_0
 add wave -color #7FB0FF -label out_1 /test_module_tb/out_1
-add wave -color #7FB0FF -label out_valid_1 /test_module_tb/out_valid_1
 add wave -color #7FB0FF -label out_2 /test_module_tb/out_2
-add wave -color #7FB0FF -label out_valid_2 /test_module_tb/out_valid_2
 add wave -color #7FB0FF -label out_3 /test_module_tb/out_3
+add wave -color #7FB0FF -label out_valid_0 /test_module_tb/out_valid_0
+add wave -color #7FB0FF -label out_valid_1 /test_module_tb/out_valid_1
+add wave -color #7FB0FF -label out_valid_2 /test_module_tb/out_valid_2
 add wave -color #7FB0FF -label out_valid_3 /test_module_tb/out_valid_3
 
 # --------------------------------------------------------------------
 add wave -divider internal
+
+add wave -color red -label flag_faild /test_module_tb/flag_faild
+add wave -color red -label flag_first_after_rst /test_module_tb/uut/flag_first_after_rst
 
 add wave -color #BCFFDE -label out_0_xor /test_module_tb/uut/out_0_xor
 add wave -color #BCFFDE -label out_1_xor /test_module_tb/uut/out_1_xor
@@ -31,6 +40,10 @@ add wave -color #FFC568 -label out_1_reg_en /test_module_tb/uut/out_1_reg_en
 add wave -color #FFC568 -label out_2_reg_en /test_module_tb/uut/out_2_reg_en
 add wave -color #FFC568 -label out_3_reg_en /test_module_tb/uut/out_3_reg_en
 
+add wave -color #BCFFDE -label out_0_reg_latch /test_module_tb/uut/out_0_reg_latch
+add wave -color #BCFFDE -label out_1_reg_latch /test_module_tb/uut/out_1_reg_latch
+add wave -color #BCFFDE -label out_2_reg_latch /test_module_tb/uut/out_2_reg_latch
+add wave -color #BCFFDE -label out_3_reg_latch /test_module_tb/uut/out_3_reg_latch
 
 
 
